@@ -101,8 +101,9 @@ allButtons.forEach(button => button.addEventListener("click", e => {
         } 
         else {
             let parts = fullExpression.split(operator)
-    
-            if ("×÷%^".includes(operator) && parts[1]==="") {
+            console.log(operator)
+            console.log(parts)
+            if ("×÷^".includes(operator) && parts[1]==="") {
                 num1 = Number(parts[0])
                 num2 = 1
             } else if ("%".includes(operator) && parts[1]==="") {
@@ -114,7 +115,7 @@ allButtons.forEach(button => button.addEventListener("click", e => {
                 num2 = Number(parts[1])
             }
         }
-        
+        console.log(num1, num2, operator)
         answer = operate(num1, operator, num2)
         fullExpression = +(answer.toFixed(10))
         operatorCount--
@@ -145,9 +146,16 @@ allButtons.forEach(button => button.addEventListener("click", e => {
             }
             operatorCount--
             answer = operate(num1, operator, num2)
-            fullExpression = +(answer.toFixed(10))
-            justCalculated = true
-        }
+            if (answer === "Can't divide by zero!") {
+                fullExpression = answer
+                operator = ""
+                operatorCount = 0
+                decimalCount = 0
+                justCalculated = true
+            } else {
+                fullExpression = +(answer.toFixed(10))
+                justCalculated = true
+        }}
     }
     else if (buttonClicked === "Del") {
         if ("+-×÷%^".includes(fullExpression[fullExpression.length - 1])) {
@@ -187,11 +195,6 @@ allButtons.forEach(button => button.addEventListener("click", e => {
         operator = buttonClicked
         decimalCount = 0
     }
-
-    console.log("Start....Full expression = " + fullExpression)
-    console.log("Operator = " + operator)
-    console.log("Operator count = " + operatorCount)
-    console.log("\n")
 
     display.textContent = fullExpression
 }))
